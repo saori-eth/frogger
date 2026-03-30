@@ -36,13 +36,12 @@ function tunnel(app, z0, z1, side, group) {
   const xSign = side === 'left' ? -1 : 1
   const xPos = xSign * TUNNEL_X
 
-  // Outer wall
+  // Outer wall (no physics — buses pass through)
   const wall = app.create('prim', {
     type: 'box',
     size: [TUNNEL_DEPTH, TUNNEL_HEIGHT, depth],
     position: [xPos, TUNNEL_HEIGHT / 2, zCenter],
     color: COLORS.tunnel,
-    physics: 'static',
   })
   group.add(wall)
 
@@ -52,7 +51,6 @@ function tunnel(app, z0, z1, side, group) {
     size: [TUNNEL_DEPTH + 1, 0.3, depth],
     position: [xPos, TUNNEL_HEIGHT, zCenter],
     color: COLORS.tunnel,
-    physics: 'static',
   })
   group.add(roof)
 

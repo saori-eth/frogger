@@ -2,7 +2,6 @@ import { Position, Velocity, BusData, Renderable } from '../../common/components
 import { createBusVisual } from '../busVisual.js'
 
 export function createRenderSystem(ecs, app) {
-  // Map from server bus id -> local ECS entity id
   const serverToLocal = new Map()
 
   function spawnBus(data) {
@@ -14,7 +13,7 @@ export function createRenderSystem(ecs, app) {
     ])
 
     const node = createBusVisual(app, { road: data.road, len: data.len, dir: data.dir })
-    node.position.set(data.x, 0, data.z)
+    node.position.set(data.x, 1.35, data.z)
 
     const renderable = ecs.get(localId, 'renderable')
     renderable.node = node
@@ -41,5 +40,5 @@ export function createRenderSystem(ecs, app) {
     }
   }
 
-  return { spawnBus, despawnBus, syncPositions, serverToLocal }
+  return { spawnBus, despawnBus, syncPositions }
 }

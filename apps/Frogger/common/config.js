@@ -2,8 +2,8 @@
 export const FIELD_WIDTH = 20
 export const HALF_WIDTH = FIELD_WIDTH / 2
 
-export const BUS_SPAWN_X = 14
-export const BUS_DESPAWN_X = 16
+export const BUS_SPAWN_X = 12
+export const BUS_DESPAWN_X = 12
 
 export const TUNNEL_X = 11
 export const TUNNEL_DEPTH = 2
