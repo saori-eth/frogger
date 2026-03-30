@@ -9,7 +9,7 @@ export function createBusVisual(app, busData) {
 
   const bodyColor = COLORS.bus[road]
   const roofColor = COLORS.busRoof[road]
-  const busWidth = 2.2
+  const busWidth = 2.6
   const halfBody = BODY_HEIGHT / 2
 
   // Rigidbody root — kinematic, moves by code
@@ -27,19 +27,23 @@ export function createBusVisual(app, busData) {
   solid.setSize(len, BODY_HEIGHT, busWidth)
   rb.add(solid)
 
-  // Trigger collider — must be 'environment' layer so players interact with it
-  // slightly larger so player enters trigger before solid pushes them away
+  // Trigger collider — slightly larger so player enters trigger before solid pushes
   const trig = app.create('collider', { type: 'box', trigger: true })
   trig.setSize(len + 0.4, BODY_HEIGHT + 0.4, busWidth + 0.4)
   rb.add(trig)
 
-  // Visual body (no physics)
-  const body = app.create('prim', {
+  // Visual body
+  const bodyOpts = {
     type: 'box',
     size: [len, BODY_HEIGHT, busWidth],
     color: bodyColor,
-  })
-  rb.add(body)
+  }
+  // Road 2 buses get a menacing glow
+  if (road === 2) {
+    bodyOpts.emissive = '#330000'
+    bodyOpts.emissiveIntensity = 0.5
+  }
+  rb.add(app.create('prim', bodyOpts))
 
   // Roof
   rb.add(app.create('prim', {
@@ -80,19 +84,31 @@ export function createBusVisual(app, busData) {
     }))
   }
 
-  // Headlights on hard road
-  if (road === 2) {
-    const frontX = dir > 0 ? len / 2 + 0.01 : -(len / 2 + 0.01)
-    for (const hz of [0.5, -0.5]) {
-      rb.add(app.create('prim', {
-        type: 'box',
-        size: [0.05, 0.2, 0.3],
-        position: [frontX, -0.3, hz],
-        color: COLORS.headlight,
-        emissive: COLORS.headlight,
-        emissiveIntensity: 4,
-      }))
-    }
+  // Headlights — all roads, escalating intensity
+  const headlightIntensity = [0.8, 1.0, 1.5]
+  const frontX = dir > 0 ? len / 2 + 0.01 : -(len / 2 + 0.01)
+  for (const hz of [0.5, -0.5]) {
+    rb.add(app.create('prim', {
+      type: 'box',
+      size: [0.05, 0.2, 0.3],
+      position: [frontX, -0.3, hz],
+      color: COLORS.headlight,
+      emissive: COLORS.headlight,
+      emissiveIntensity: headlightIntensity[road],
+    }))
+  }
+
+  // Taillights — red glow on the rear
+  const rearX = dir > 0 ? -(len / 2 + 0.01) : (len / 2 + 0.01)
+  for (const tz of [0.5, -0.5]) {
+    rb.add(app.create('prim', {
+      type: 'box',
+      size: [0.05, 0.15, 0.25],
+      position: [rearX, -0.3, tz],
+      color: COLORS.taillight,
+      emissive: COLORS.taillight,
+      emissiveIntensity: 1.5,
+    }))
   }
 
   if (dir < 0) {

@@ -1,0 +1,39 @@
+{
+  "id": "$scene",
+  "uid": "a792a8f8-d2fb-483b-afaf-7e159a1105e2",
+  "name": "Scene",
+  "scope": "global",
+  "script": "asset://6ad5ae0dd6dfa1af850b0a9c15cbe2c565e80585a0e1755ae74b84a861416e50.js",
+  "createdAt": "2026-03-29T23:46:40.234Z",
+  "author": null,
+  "url": null,
+  "desc": null,
+  "preload": true,
+  "public": false,
+  "locked": false,
+  "frozen": false,
+  "unique": true,
+  "disabled": false,
+  "scene": true,
+  "keep": true,
+  "scriptFormat": "module",
+  "model": "assets/Model.glb",
+  "image": null,
+  "props": {
+    "hour": 4,
+    "period": "pm",
+    "intensity": 1,
+    "sky": {
+      "url": "assets/sky.jpg"
+    },
+    "hdr": {
+      "url": "assets/sky.hdr"
+    },
+    "verticalRotation": 40,
+    "horizontalRotation": 230,
+    "rotationY": 0,
+    "fogNear": 450,
+    "fogFar": 1000,
+    "fogColor": "#b9ddf8"
+  }
+}
