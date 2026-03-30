@@ -10,6 +10,7 @@ export function initServer(app, world, setTimeout) {
   const sync = createSync(app)
   const spawnSystem = createSpawnSystem(ecs, sync)
   const despawnSystem = createDespawnSystem(ecs, sync)
+  const spawn = new Vector3(SPAWN_POINT[0], SPAWN_POINT[1], SPAWN_POINT[2])
 
   const hitCooldowns = {}
 
@@ -19,7 +20,7 @@ export function initServer(app, world, setTimeout) {
     const player = world.getPlayer(playerId)
     if (!player) return
     hitCooldowns[playerId] = now
-    player.teleport(SPAWN_POINT, 0)
+    player.teleport(spawn, Math.PI)
     app.send('playerHit', { playerId })
   })
 

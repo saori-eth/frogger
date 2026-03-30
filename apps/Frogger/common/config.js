@@ -76,6 +76,6 @@ export const COLORS = {
 }
 
 // --- Player ---
-export const SPAWN_POINT = [0, 0, 2.5]
+export const SPAWN_POINT = [0, 0.5, 2.5]
 export const HIT_COOLDOWN = 1.0
 export const WIN_TELEPORT_DELAY = 3000
