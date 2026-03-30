@@ -4,17 +4,17 @@ import {
   LANE_DEPTH, LANE_GAP, COLORS
 } from '../common/config.js'
 
-function floorSlab(app, z0, z1, color, group) {
+function floorSlab(app, z0, z1, color, group, hasPhysics = true) {
   const depth = z1 - z0
   const zCenter = (z0 + z1) / 2
-  const slab = app.create('prim', {
+  const opts = {
     type: 'box',
     size: [FIELD_WIDTH, FLOOR_THICKNESS, depth],
     position: [0, -FLOOR_THICKNESS / 2, zCenter],
     color,
-    physics: 'static',
-  })
-  group.add(slab)
+  }
+  if (hasPhysics) opts.physics = 'static'
+  group.add(app.create('prim', opts))
 }
 
 function curb(app, z0, z1, group) {
@@ -70,7 +70,7 @@ function laneMarkings(app, roadZ0, laneCount, group) {
     for (let x = -HALF_WIDTH + 1; x < HALF_WIDTH; x += 2) {
       const dash = app.create('prim', {
         type: 'box',
-        size: [0.3, 0.02, 1],
+        size: [1, 0.02, 0.3],
         position: [x, 0.01, z],
         color: COLORS.laneMarking,
       })
@@ -107,7 +107,7 @@ export function buildLayout(app) {
   // Roads
   const roads = [ZONES.road1, ZONES.road2, ZONES.road3]
   for (const road of roads) {
-    floorSlab(app, road.z0, road.z1, COLORS.road, root)
+    floorSlab(app, road.z0, road.z1, COLORS.road, root, false)
     laneMarkings(app, road.z0, 3, root)
     tunnel(app, road.z0, road.z1, 'left', root)
     tunnel(app, road.z0, road.z1, 'right', root)

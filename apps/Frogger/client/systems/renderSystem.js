@@ -1,5 +1,5 @@
 import { Position, Velocity, BusData, Renderable } from '../../common/components.js'
-import { createBusVisual } from '../busVisual.js'
+import { createBusVisual, BODY_Y } from '../busVisual.js'
 
 export function createRenderSystem(ecs, app) {
   const serverToLocal = new Map()
@@ -13,11 +13,11 @@ export function createRenderSystem(ecs, app) {
     ])
 
     const node = createBusVisual(app, { road: data.road, len: data.len, dir: data.dir })
-    node.position.set(data.x, 1.35, data.z)
+    node.position.set(data.x, BODY_Y, data.z)
+    app.add(node)
 
     const renderable = ecs.get(localId, 'renderable')
     renderable.node = node
-    app.add(node)
 
     serverToLocal.set(data.id, localId)
     return localId
@@ -34,9 +34,7 @@ export function createRenderSystem(ecs, app) {
 
   function syncPositions() {
     for (const [id, pos, , renderable] of ecs.query('position', 'velocity', 'renderable')) {
-      if (renderable.node) {
-        renderable.node.position.x = pos.x
-      }
+      if (renderable.node) renderable.node.position.x = pos.x
     }
   }
 
