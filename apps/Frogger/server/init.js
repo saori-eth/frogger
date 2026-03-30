@@ -15,14 +15,26 @@ export function initServer(app, world, setTimeout) {
   const hitCooldowns = {}
   let syncTimer = 0
 
-  app.on('hit', ({ playerId }) => {
+  const RAGDOLL_DURATION = 3
+
+  app.on('hit', ({ playerId, dir }) => {
     const now = Date.now()
     if (hitCooldowns[playerId] && now - hitCooldowns[playerId] < HIT_COOLDOWN * 1000) return
     const player = world.getPlayer(playerId)
     if (!player) return
     hitCooldowns[playerId] = now
-    player.teleport(spawn, Math.PI)
+    player.ragdoll(true, new Vector3((dir || 1) * 8, 10, 0), {
+      stiffness: 0.3,
+      duration: RAGDOLL_DURATION,
+    })
     app.send('playerHit', { playerId })
+    setTimeout(() => {
+      const p = world.getPlayer(playerId)
+      if (p) {
+        p.ragdoll(false)
+        p.teleport(spawn, Math.PI)
+      }
+    }, RAGDOLL_DURATION * 1000)
   })
 
   app.on('playerWin', ({ playerId }) => {

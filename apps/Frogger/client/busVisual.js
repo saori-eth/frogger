@@ -18,7 +18,7 @@ export function createBusVisual(app, busData) {
     onTriggerEnter: (e) => {
       if (!e.playerId || !e.isLocalPlayer) return
       console.log('sending hit', e)
-      app.send('hit', { playerId: e.playerId })
+      app.send('hit', { playerId: e.playerId, dir })
     },
   })
 

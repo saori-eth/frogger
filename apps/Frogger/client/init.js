@@ -39,7 +39,14 @@ export function initClient(app, world, setTimeout) {
     app.on('busSpawn', (data) => renderSystem.spawnBus(data))
     app.on('busDespawn', ({ id }) => renderSystem.despawnBus(id))
     app.on('busSync', (snapshot) => renderSystem.reconcileBuses(snapshot))
-    app.on('playerHit', () => hud.showHitFlash())
+    app.on('playerHit', ({ playerId }) => {
+      const local = world.getPlayer()
+      if (local && local.id === playerId) {
+        world.setReticle({ opacity: 0, layers: [{ shape: 'dot', radius: 0.5, opacity: 0 }] })
+        setTimeout(() => world.setReticle(null), 3000)
+      }
+      hud.showHitFlash()
+    })
     app.on('playerWon', ({ name }) => hud.showWinMessage(name))
 
     app.on('update', (delta) => {
