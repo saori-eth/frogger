@@ -1,10 +1,16 @@
 export function createSync(app) {
   const buses = {}
 
+  function getSnapshot() {
+    return Object.values(buses).map(bus => ({ ...bus }))
+  }
+
   return {
     getBuses() {
       return buses
     },
+
+    getSnapshot,
 
     onSpawn(id, data) {
       buses[id] = data
@@ -22,6 +28,10 @@ export function createSync(app) {
           buses[id].x = pos.x
         }
       }
+    },
+
+    broadcastSnapshot() {
+      app.send('busSync', getSnapshot())
     },
   }
 }

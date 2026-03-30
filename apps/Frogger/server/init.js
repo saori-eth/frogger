@@ -1,6 +1,6 @@
 import { createWorld } from '../common/ecs.js'
 import { movementSystem } from '../common/systems/movementSystem.js'
-import { LANES, SPAWN_POINT, HIT_COOLDOWN, WIN_TELEPORT_DELAY } from '../common/config.js'
+import { LANES, SPAWN_POINT, HIT_COOLDOWN, WIN_TELEPORT_DELAY, BUS_SYNC_INTERVAL } from '../common/config.js'
 import { createSpawnSystem } from './systems/spawnSystem.js'
 import { createDespawnSystem } from './systems/despawnSystem.js'
 import { createSync } from './sync.js'
@@ -13,6 +13,7 @@ export function initServer(app, world, setTimeout) {
   const spawn = new Vector3(SPAWN_POINT[0], SPAWN_POINT[1], SPAWN_POINT[2])
 
   const hitCooldowns = {}
+  let syncTimer = 0
 
   app.on('hit', ({ playerId }) => {
     const now = Date.now()
@@ -39,6 +40,12 @@ export function initServer(app, world, setTimeout) {
     movementSystem(ecs, delta)
     despawnSystem()
     sync.updatePositions(ecs)
+
+    syncTimer += delta
+    if (syncTimer >= BUS_SYNC_INTERVAL) {
+      syncTimer %= BUS_SYNC_INTERVAL
+      sync.broadcastSnapshot()
+    }
   })
 
   app.state.ready = true

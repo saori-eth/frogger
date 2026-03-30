@@ -33,19 +33,18 @@ export function initClient(app, world, setTimeout) {
 
     // Hydrate existing buses
     if (state.buses) {
-      for (const busData of Object.values(state.buses)) {
-        renderSystem.spawnBus(busData)
-      }
+      renderSystem.reconcileBuses(state.buses)
     }
 
     app.on('busSpawn', (data) => renderSystem.spawnBus(data))
     app.on('busDespawn', ({ id }) => renderSystem.despawnBus(id))
+    app.on('busSync', (snapshot) => renderSystem.reconcileBuses(snapshot))
     app.on('playerHit', () => hud.showHitFlash())
     app.on('playerWon', ({ name }) => hud.showWinMessage(name))
 
     app.on('update', (delta) => {
       movementSystem(ecs, delta)
-      renderSystem.syncPositions()
+      renderSystem.syncPositions(delta)
     })
   }
 

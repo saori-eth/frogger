@@ -79,3 +79,6 @@ export const COLORS = {
 export const SPAWN_POINT = [0, 0.5, 2.5]
 export const HIT_COOLDOWN = 1.0
 export const WIN_TELEPORT_DELAY = 3000
+export const BUS_SYNC_INTERVAL = 0.25
+export const BUS_SYNC_SNAP_DISTANCE = 1.0
+export const BUS_SYNC_CORRECTION_RATE = 12
