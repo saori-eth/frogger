@@ -1,48 +1,25 @@
 export function createHud(app, setTimeout) {
-  // Title bar (always visible)
-  const titleUi = app.create('ui', {
-    space: 'screen',
-    pivot: 'top-center',
-    position: [0.5, 0, 0],
-    offset: [0, 20, 0],
-    width: 220,
-    height: 50,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    pointerEvents: false,
-  })
-  const titleText = app.create('uitext', {
-    value: 'BUS FROGGER',
-    fontSize: 24,
-    color: '#00FF00',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  })
-  titleUi.add(titleText)
-  app.add(titleUi)
-
   // Transient overlays — created/destroyed on demand to avoid black div artifacts
   let activeHit = null
   let activeWin = null
 
-  function showHitFlash() {
+  function showHitFlash(isLocal, name) {
     if (activeHit) app.remove(activeHit)
+    const msg = isLocal ? 'HIT! Back to start...' : `${name} got hit!`
     const ui = app.create('ui', {
       space: 'screen',
       pivot: 'center',
       position: [0.5, 0.3, 0],
       width: 300,
       height: 50,
-      backgroundColor: 'rgba(255,0,0,0.7)',
+      backgroundColor: isLocal ? 'rgba(255,0,0,0.7)' : 'rgba(255,100,0,0.7)',
       borderRadius: 8,
       justifyContent: 'center',
       alignItems: 'center',
       pointerEvents: false,
     })
     const text = app.create('uitext', {
-      value: 'HIT! Back to start...',
+      value: msg,
       fontSize: 18,
       color: '#FFFFFF',
       fontWeight: 'bold',

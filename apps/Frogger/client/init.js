@@ -1,6 +1,6 @@
 import { createWorld } from '../common/ecs.js'
 import { movementSystem } from '../common/systems/movementSystem.js'
-import { ZONES, FIELD_WIDTH } from '../common/config.js'
+import { ZONES, FIELD_WIDTH, SPAWN_POINT, FLOOR_THICKNESS } from '../common/config.js'
 import { buildLayout } from './layout.js'
 import { createRenderSystem } from './systems/renderSystem.js'
 import { createInputSystem } from './systems/inputSystem.js'
@@ -39,13 +39,14 @@ export function initClient(app, world, setTimeout) {
     app.on('busSpawn', (data) => renderSystem.spawnBus(data))
     app.on('busDespawn', ({ id }) => renderSystem.despawnBus(id))
     app.on('busSync', (snapshot) => renderSystem.reconcileBuses(snapshot))
-    app.on('playerHit', ({ playerId }) => {
+    app.on('playerHit', ({ playerId, name }) => {
       const local = world.getPlayer()
-      if (local && local.id === playerId) {
+      const isLocal = local && local.id === playerId
+      if (isLocal) {
         world.setReticle({ opacity: 0, layers: [{ shape: 'dot', radius: 0.5, opacity: 0 }] })
         setTimeout(() => world.setReticle(null), 3000)
       }
-      hud.showHitFlash()
+      hud.showHitFlash(isLocal, name)
     })
     app.on('playerWon', ({ name }) => hud.showWinMessage(name))
 

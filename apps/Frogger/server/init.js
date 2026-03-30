@@ -27,7 +27,7 @@ export function initServer(app, world, setTimeout) {
       stiffness: 0.3,
       duration: RAGDOLL_DURATION,
     })
-    app.send('playerHit', { playerId })
+    app.send('playerHit', { playerId, name: player.name })
     setTimeout(() => {
       const p = world.getPlayer(playerId)
       if (p) {
@@ -43,7 +43,7 @@ export function initServer(app, world, setTimeout) {
     app.send('playerWon', { playerId, name: player.name })
     setTimeout(() => {
       const p = world.getPlayer(playerId)
-      if (p) p.teleport(SPAWN_POINT, 0)
+      if (p) p.teleport(spawn, 0)
     }, WIN_TELEPORT_DELAY)
   })
 
