@@ -1,0 +1,22 @@
+{
+  "id": "Frogger",
+  "uid": "d84f946b-f887-4ee9-9fe4-93669abf24fe",
+  "name": "Frogger",
+  "scope": "Frogger",
+  "script": "asset://62c49544a065fc83db00053a05873f86d0edacc5da2e2e94ea6a4015dd7c0b70.js",
+  "createdAt": "2026-03-30T00:01:25.869Z",
+  "preload": false,
+  "public": false,
+  "locked": false,
+  "frozen": false,
+  "unique": false,
+  "disabled": false,
+  "scene": false,
+  "keep": true,
+  "scriptFormat": "module",
+  "model": "assets/Model.glb",
+  "image": {
+    "url": "assets/Model.png"
+  },
+  "props": {}
+}
